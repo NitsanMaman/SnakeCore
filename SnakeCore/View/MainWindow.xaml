@@ -1,0 +1,105 @@
+﻿<Window x:Class="Snake.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Snake Game" Height="600" Width="800">
+
+    <Grid>
+        <!-- Define two columns: One for the game area, one for the buttons -->
+        <Grid.ColumnDefinitions>
+            <!-- Empty space from left for margin-->
+            <ColumnDefinition Width="50" />
+            <!-- Game Area Column (auto adjust based on the game size) -->
+            <ColumnDefinition Width="Auto" />
+            <!-- Spacer between the game board and the buttons -->
+            <ColumnDefinition Width="20" />
+            <!-- Buttons Column (fixed width) -->
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Define rows to align everything vertically in the center -->
+        <Grid.RowDefinitions>
+            <!-- Empty space above to vertically center -->
+            <RowDefinition Height="*" />
+            <!-- Actual game area row -->
+            <RowDefinition Height="Auto" />
+            <!-- Empty space below to vertically center -->
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Game Area in its own column -->
+        <!-- Width and Height are bound to GameBoardWidth and GameBoardHeight from the ViewModel -->
+        <Canvas x:Name="GameCanvas" Background="White"
+                Width="{Binding GameBoardWidth}" Height="{Binding GameBoardHeight}"
+                Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <!-- Bind the grid elements (lines) to this ItemsControl -->
+            <ItemsControl ItemsSource="{Binding GameElements}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+            <!-- Bind the snake elements (rectangles) to this ItemsControl -->
+            <ItemsControl ItemsSource="{Binding Snake}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <!-- Template for rendering each snake body part as a Rectangle -->
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <!-- Each snake part is rendered as a rectangle with Width, Height, and Fill color bound to the properties in the ViewModel -->
+                        <Rectangle Width="{Binding Width}" Height="{Binding Height}" Fill="{Binding Fill}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Canvas>
+
+        <!-- Control Buttons in a separate column, next to the game area -->
+        <Grid Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Width="150" Height="150">
+            <!-- Nested Grid for button controls and logo centered both Vertically and Horizontally -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+
+            <!-- Up Button -->
+            <Button Content="Up" Grid.Row="0" Grid.Column="1" Width="50" Height="50"
+                    Command="{Binding MoveUpCommand}" IsEnabled="{Binding UpButtonEnabled}" />
+            <!-- Button to move the snake up, bound to the MoveUpCommand in the ViewModel.
+                 The button's enabled state is controlled by UpButtonEnabled. -->
+
+            <!-- Left Button -->
+            <Button Content="Left" Grid.Row="1" Grid.Column="0" Width="50" Height="50"
+                    Command="{Binding MoveLeftCommand}" IsEnabled="{Binding LeftButtonEnabled}" />
+            <!-- Button to move the snake left, bound to the MoveLeftCommand in the ViewModel.
+                 The button's enabled state is controlled by LeftButtonEnabled. -->
+            
+            <!-- Right Button -->
+            <Button Content="Right" Grid.Row="1" Grid.Column="2" Width="50" Height="50"
+                    Command="{Binding MoveRightCommand}" IsEnabled="{Binding RightButtonEnabled}" />
+            <!-- Button to move the snake right, bound to the MoveRightCommand in the ViewModel.
+                 The button's enabled state is controlled by RightButtonEnabled. -->
+
+            <!-- Down Button -->
+            <Button Content="Down" Grid.Row="2" Grid.Column="1" Width="50" Height="50"
+                    Command="{Binding MoveDownCommand}" IsEnabled="{Binding DownButtonEnabled}" />
+            <!-- Button to move the snake down, bound to the MoveDownCommand in the ViewModel.
+                 The button's enabled state is controlled by DownButtonEnabled. -->
+
+            <!-- Logo in the center -->
+            <Image Grid.Row="1" Grid.Column="1" Width="50" Height="50" 
+                   Source="/SnakeCore;component/Images/KorentecLogo.png" />
+            <!-- The logo is placed in the center of the control buttons for fun :) -->
+        </Grid>
+    </Grid>
+</Window>
